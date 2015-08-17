@@ -11,4 +11,3 @@ user = <gmail user>
 password = <gmail password>
 recipients = %(admins)s
 mobile_recipients = <mobile recipients>
-
