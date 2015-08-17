@@ -176,12 +176,8 @@ def main():
     logger.addHandler(mail_hdlr)
 
     if options.target == 'tommorow':
-        if options.important:
-            subject = u'明日の予定(重要)'
-            task_filter = 'status:incomplete AND due:"tommorow AND (priority:1 OR list:"出勤時刻")"'
-        else:
-            subject = u'明日の予定'
-            task_filter = 'status:incomplete AND due:"tommorow"'
+        subject = u'明日の予定'
+        task_filter = 'status:incomplete AND due:"tommorow"'
     elif options.target == 'two_weeks':
         subject = u'直近の予定'
         task_filter = 'status:incomplete AND dueWithin:"2 week of today"'
@@ -191,16 +187,21 @@ def main():
 
     body = ''
     for task in get_task(task_filter):
-        body += '* %s %s\n' %(task['due'], task['name'])#.encode(DEFAULT_ENCODING))
+        body += '* %s %s\n' %(task['due'], task['name'])
+        
     if not body:
         return
     
     if options.important:
         to_addr = MAIL_MOBILE_RECIPIENTS + MAIL_RECIPIENTS
+        subject += u'(重要)'
+        task_filter += ' AND (priority:1 OR list:"出勤時刻")"'
     else:
-        to_addr = MAIL_RECIPIENTS        
+        to_addr = MAIL_RECIPIENTS
+
+    to_addr = MAIL_MOBILE_RECIPIENTS + MAIL_RECIPIENTS
     try:
-        send_mail(subject, body)
+        send_mail(subject=subject, body=body, to_addr=to_addr)
         logger.info('send %s task' % options.target)
     except Exception as e:
         logger.exception(str(e))
