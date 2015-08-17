@@ -1,0 +1,6 @@
+*.pyc
+*~
+*.bak
+*.orig
+log
+site.cfg
