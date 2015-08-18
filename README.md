@@ -6,6 +6,10 @@
 
 ## How to use ?
 
+* make log directory
+```
+mkdir log
+```
 * copy from site.cfg.example to site.cfg
 * customize it
 * see the help
